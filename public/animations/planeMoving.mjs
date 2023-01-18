@@ -1,4 +1,5 @@
 import { loadImage } from "./base/default.mjs";
+import { drawClock } from './base/time.mjs';
 
 const planeSvg = loadImage(new URL("./img/plane.svg", import.meta.url));
 const cloudSvg = loadImage(new URL("./img/cloud.svg", import.meta.url));

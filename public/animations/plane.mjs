@@ -12,10 +12,15 @@ export function draw(ctx, width, height, t, state) {
   ctx.fillRect(0, 0, width, height);
 
   if (planeSvg.loaded) {
-    ctx.drawImage(
-      planeSvg.img,
-      width / 2 - planeSvg.img.width / 2,
-      height / 2 - planeSvg.img.height / 2 + 10,
+    ctx.translate(
+      width / 2 - planeSvg.img.width / 2 - 20,
+      height / 2 - planeSvg.img.height / 2 + 120,
     );
+    ctx.fillStyle = '#333333';
+    let yRoad = 146;
+    ctx.fillRect(-width/2, yRoad, width*2, yRoad + 300);
+    ctx.rotate(-0.3);
+    ctx.drawImage(planeSvg.img, 0, 0);
   }
 }
+
