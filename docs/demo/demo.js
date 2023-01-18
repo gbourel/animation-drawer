@@ -21,7 +21,8 @@
     }
 
     if(window.localStorage) {
-      last = localStorage.getItem('animation_demo_last');
+      let val = localStorage.getItem('animation_demo_last');
+      if (val) { last = val; }
     }
     select.value = last;
     drawer.setAttribute('type', last);
