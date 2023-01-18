@@ -12,7 +12,7 @@
     time_plot: { src: "./animations/timePlot.mjs", playable: false },
   };
   // FIXME how to use its own CSS file ?
-  const baseUrl = "http://localhost:8080";
+  const baseUrl = "https://gbourel.github.io/animation-drawer";
 
   class AnimationDrawerElement extends HTMLElement {
     static get observedAttributes() {
