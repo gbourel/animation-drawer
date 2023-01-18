@@ -6,13 +6,13 @@
     car: { src: "./animations/car.mjs", playable: false },
     fan: { src: "./animations/fan.mjs" },
     gears: { src: "./animations/gears.mjs" },
-    plane: { src: "./animations/plane.mjs" },
+    plane: { src: "./animations/plane.mjs", playable: false },
     plane_moving: { src: "./animations/planeMoving.mjs" },
-    plane_linear:  { src: "./animations/planeLinear.mjs" },
+    plane_linear:  { src: "./animations/planeLinear.mjs", playable: false },
     time_plot: { src: "./animations/timePlot.mjs", playable: false },
   };
-
-  let baseUrl = "http://localhost:8080";
+  // FIXME how to use its own CSS file ?
+  const baseUrl = "http://localhost:8080";
 
   class AnimationDrawerElement extends HTMLElement {
     static get observedAttributes() {

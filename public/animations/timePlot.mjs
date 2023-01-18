@@ -85,7 +85,7 @@ export function draw(ctx, width, height, t, state) {
   ctx.fillText(`t = ${Math.round(curTime*100) / 100} s`, width/2, 60);
   ctx.restore();
 
-
+  // Horloge
   ctx.translate(Math.round(width * 0.5), Math.round(height * 0.2));
   ctx.scale(1.2, 1.2);
   drawClock(ctx, state.time * durationMin);

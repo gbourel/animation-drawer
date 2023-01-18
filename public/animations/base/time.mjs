@@ -1,5 +1,5 @@
 
-export function drawClock(ctx, t) {
+export function drawClock(ctx, angle) {
   ctx.save();
   ctx.globalAlpha = 1.0;
 
@@ -29,7 +29,7 @@ export function drawClock(ctx, t) {
   ctx.save();
   ctx.strokeStyle = "#333";
 
-  ctx.rotate((t - Math.floor(t)) * Math.PI * 2);
+  ctx.rotate((angle - Math.floor(angle)) * Math.PI * 2);
   ctx.beginPath();
   ctx.lineTo(0, 0);
   ctx.lineTo(0, -clock_r + 4);
