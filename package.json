@@ -1,12 +1,13 @@
 {
   "name": "animation-drawer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "description": "",
   "license": "AGPL-3.0",
   "author": "GB <gbourel@gmail.com>",
   "scripts": {
-    "dev": "live-server --cors public/"
+    "dev": "live-server --cors docs/",
+    "start": "npm run dev"
   },
   "dependencies": {
   },

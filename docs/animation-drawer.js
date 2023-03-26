@@ -10,6 +10,7 @@
     plane_moving: { src: "./animations/planeMoving.mjs" },
     plane_linear:  { src: "./animations/planeLinear.mjs", playable: false },
     time_plot: { src: "./animations/timePlot.mjs", playable: false },
+    transports: { src: "./animations/transports.mjs" },
   };
   // FIXME how to use its own CSS file ?
   const baseUrl = "https://gbourel.github.io/animation-drawer";

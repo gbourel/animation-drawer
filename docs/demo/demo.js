@@ -9,7 +9,7 @@
   };
 
   window.onload = () => {
-    let last = 'plane_moving';
+    let last = 'transports';
     const drawer = document.querySelector('animation-drawer');
 
     const select = document.getElementById('anim-select');
