@@ -28,8 +28,8 @@ export function draw(ctx, width, height, t) {
   // move to center
   ctx.translate(width * 0.5, height * 0.48);
 
-  let size = width * 0.34;
-  ctx.translate(-size * 0.91, size * 0.11);
+  let size = width * 0.3;
+  ctx.translate(-size * 0.91, 0);
 
   // inclinaison
   // ctx.rotate(-Math.PI * 0.13);

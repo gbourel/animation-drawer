@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>AnimationDrawer</title>
+
+    <script src="./animation-drawer.js"></script>
+
+    <style>
+      .drawer {
+        width: 100%;
+        height: 85vh;
+        margin: 1rem 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Drawer -->
+    <div class="drawer">
+      <animation-drawer type="none"></animation-drawer>
+    </div>
+
+    <script>
+      let type = "plane_moving";
+      location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+          const param = item.split("=");
+          if (param[0] === 'type') {
+            type = decodeURIComponent(param[1]);
+          }
+        });
+      document.querySelector('animation-drawer').setAttribute('type', type);
+    </script>
+  </body>
+</html>
