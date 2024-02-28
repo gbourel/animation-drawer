@@ -7,6 +7,7 @@
     fan: { src: "./animations/fan.mjs" },
     gears0: { src: "./animations/gears0.mjs" },
     gears:  { src: "./animations/gears.mjs" },
+    hanoi:  { src: "./animations/hanoi.mjs" },
     plane: { src: "./animations/plane.mjs", playable: false },
     plane_moving: { src: "./animations/planeMoving.mjs" },
     plane_linear:  { src: "./animations/planeLinear.mjs", playable: false },
@@ -14,7 +15,10 @@
     transports: { src: "./animations/transports.mjs" },
   };
   // FIXME how to use its own CSS file ?
-  const baseUrl = "https://gbourel.github.io/animation-drawer";
+  let baseUrl = "https://gbourel.github.io/animation-drawer";
+  if (location.host.startsWith('nsix.test')) {
+    baseUrl = "https://nsix.test:8080";  // FIXME port ?
+  }
 
   class AnimationDrawerElement extends HTMLElement {
     static get observedAttributes() {
@@ -101,7 +105,7 @@
    * @param {Object} options - JSON object qui décrit les paramètres de l'afficheur.
    * @return {DOMElement} - L'élément qui contient le canvas.
    */
-  function Drawer(paint, state, options = { playable: true }) {
+  function Drawer(paint, state, options = { playable: true, setup: null }) {
     var self = this;
     self.paint = paint;
 
@@ -119,6 +123,10 @@
     canvas.style.position = "absolute";
     canvas.style.top = "0";
     canvas.style.left = "0";
+
+    if (options.setup) {
+      options.setup(canvas);
+    }
 
     wrapper.appendChild(canvas);
 
