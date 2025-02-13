@@ -10,21 +10,26 @@
   </head>
 
   <body>
-    <main>
+    <header>
       <h1>AnimationDrawer demo</h1>
-
       <!-- List of built-in animations. -->
-      <select id="anim-select" onchange="updateDrawer(this)">
-      </select>
+      <div class="list">
+        <select id="anim-select"></select>
+        <pre>
+          <code id="sample"></code>
+        </pre>
+      </div>
+    </header>
 
+    <main>
       <!-- Drawer -->
       <div class="drawer">
         <animation-drawer type="none"></animation-drawer>
       </div>
 
-      <script src="./demo/demo.js"></script>
     </main>
 
+    <!-- Github link -->
     <a href="https://github.com/gbourel/animation-drawer" class="github-corner" aria-label="View source on Github">
         <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#424242; color:#F9F7F6; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
             <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
@@ -33,5 +38,6 @@
         </svg>
     </a>
 
+    <script src="./demo/demo.js"></script>
   </body>
 </html>

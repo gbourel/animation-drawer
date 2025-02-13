@@ -1,8 +1,21 @@
-main {
-    max-width:700px;
+html {
+    max-width:800px;
     margin: auto;
     font-family: "Helvetica Neue", Arial, sans-serif;
-    color: #222;
+    color: #333;
+}
+
+header .list {
+  display: flex;
+}
+
+pre {
+  font-family: monospace;
+  font-size: 12px;
+  white-space: pre-line;
+  margin: 0 1em;
+  padding: 0.5em 1em;
+  background-color: #f0f0f0;
 }
 
 .drawer {

@@ -1,8 +1,10 @@
 (function () {
   const SCALE = Math.min(2, window.devicePixelRatio || 1);
-  const debug = false;
+  const params = {};
+  let debug = false;
 
   const builtin = {
+    adc: { src: "./animations/adc-explainer.mjs", playable: false },
     car: { src: "./animations/car.mjs", playable: false },
     fan: { src: "./animations/fan.mjs" },
     gears0: { src: "./animations/gears0.mjs" },
@@ -19,6 +21,21 @@
   if (location.host.startsWith('nsix.test')) {
     baseUrl = "https://nsix.test:8080";  // FIXME port ?
   }
+
+  // decode params
+  location.search
+  .substr(1)
+  .split("&")
+  .forEach(function (item) {
+    const param = item.split("=");
+    if (param[0] === 'debug' && param[1] === 'true') {
+      debug = true;
+    } else if (param[0] && param[1]) {
+      let val = decodeURIComponent(param[1]);
+      params[param[0]] = val;
+    }
+  });
+
 
   class AnimationDrawerElement extends HTMLElement {
     static get observedAttributes() {
@@ -70,7 +87,7 @@
           while (this.sliders.length) {
             this.shadow.removeChild(this.sliders.pop().container);
           }
-          this.drawer.state = module.initState ? module.initState() : {};
+          this.drawer.state = module.initState ? module.initState(this.drawer) : {};
 
           this.drawer.paint = module.draw;
           this.drawer.setPlayable(conf.playable !== false);
@@ -105,8 +122,8 @@
    * @param {Object} options - JSON object qui décrit les paramètres de l'afficheur.
    * @return {DOMElement} - L'élément qui contient le canvas.
    */
-  function Drawer(paint, state, options = { playable: true, setup: null }) {
-    var self = this;
+  function Drawer(paint, state, options = { playable: true }) {
+    const self = this;
     self.paint = paint;
 
     let wrapper = document.createElement("div");
@@ -118,7 +135,7 @@
     wrapper.classList.add("canvas_container");
     wrapper.classList.add("non_selectable");
 
-    var canvas = document.createElement("canvas");
+    const canvas = document.createElement("canvas");
     canvas.classList.add("non_selectable");
     canvas.style.position = "absolute";
     canvas.style.top = "0";
@@ -140,6 +157,26 @@
     }
     wrapper.appendChild(play);
     paused = false;
+
+    this.getParam = (name) => {
+      return params[name];
+    }
+    this.addMouseMoveListener = (listener) => {
+      canvas.addEventListener('mousemove', (evt) => {
+        listener(width, height, evt.clientX, evt.clientY, true);
+      });
+      canvas.addEventListener('mouseover', (evt) => {
+        listener(width, height, evt.clientX, evt.clientY, true);
+      });
+      canvas.addEventListener('mouseout', (evt) => {
+        listener(width, height, evt.clientX, evt.clientY, false);
+      });
+    }
+    this.addClickListener = (listener) => {
+      canvas.addEventListener('click', (evt) => {
+        listener(width, height, evt.clientX, evt.clientY);
+      });
+    }
 
     this.set_paused = function (p) {
       paused = p;
@@ -191,7 +228,7 @@
     window.requestAnimationFrame(tick);
 
     this.repaint = function () {
-      var ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext("2d");
 
       ctx.resetTransform();
       ctx.clearRect(0, 0, canvas.width, canvas.height);

@@ -22,16 +22,7 @@
     </div>
 
     <script>
-      let type = "plane_moving";
-      location.search
-        .substr(1)
-        .split("&")
-        .forEach(function (item) {
-          const param = item.split("=");
-          if (param[0] === 'type') {
-            type = decodeURIComponent(param[1]);
-          }
-        });
+      let type = sessionStorage.getItem('ad_type') || "plane_moving";
       document.querySelector('animation-drawer').setAttribute('type', type);
     </script>
   </body>
