@@ -1,3 +1,5 @@
+import 'https://cdn.jsdelivr.net/npm/chart.js';
+
 const urlArgs = new URLSearchParams(window.location.search);
 
 const T_MIN = urlArgs.has('T_MIN') ? parseInt(urlArgs.get('T_MIN')) : 0;
@@ -39,7 +41,9 @@ class ADCExplainer extends HTMLElement {
       </div>
       <div class="graph-container">
         <strong>2. Conversion Analogique ⇒ Numérique</strong>
-        <canvas id="lineChart"></canvas>
+        <div class="graph">
+          <canvas id="lineChart"></canvas>
+        </div>
       </div>
       <div class="digital-output">
         <div class="label">
@@ -70,6 +74,7 @@ class ADCExplainer extends HTMLElement {
         padding: 1rem;
         text-align: center;
         color: #555;
+        user-select: none;
       }
       .adc-container .slider-container {
         display: flex;
@@ -129,10 +134,16 @@ class ADCExplainer extends HTMLElement {
         height: 140px;
         margin: 48px 0;
       }
+      .adc-container .graph-container .graph {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
       .adc-container .graph-container canvas {
         margin-top: 20px;
         width: 100%;
-        height: 260px;
+        height: 400px;
       }
       .adc-container .digital-output {
         display: flex;
@@ -229,7 +240,7 @@ class ADCExplainer extends HTMLElement {
       ]
     },
     options: {
-      responsive: false,
+      responsive: true,
       animation: {
         duration: Math.min(800, parseInt(1000/SAMPLING_RATE)),
         y: {
@@ -321,3 +332,6 @@ class ADCExplainer extends HTMLElement {
 }
 
 customElements.define('adc-explainer', ADCExplainer);
+
+export const element = ADCExplainer;
+export const draw = null;

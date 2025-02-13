@@ -48,6 +48,7 @@
       debug && console.debug("[AnimationDrawer] new drawer.");
 
       this.drawer = new Drawer();
+      this.embedded = null; // if embedded custom element
       this.sliders = [];
       this.shadow = this.attachShadow({ mode: "open" });
 
@@ -87,18 +88,37 @@
           while (this.sliders.length) {
             this.shadow.removeChild(this.sliders.pop().container);
           }
-          this.drawer.state = module.initState ? module.initState(this.drawer) : {};
-
-          this.drawer.paint = module.draw;
-          this.drawer.setPlayable(conf.playable !== false);
-
-          if (module.sliders) {
-            for (let s of module.sliders) {
-              this.sliders.push(new Slider(this.shadow, s.update));
-            }
+          // remove previous embeded element
+          if (this.embedded) {
+            this.shadow.removeChild(this.embedded);
+            this.embedded = null;
+            this.shadow.appendChild(this.drawer.element);
           }
 
-          this.drawer.on_resize();
+          if (module.element) {
+            this.drawer.paint = null;
+            this.shadow.removeChild(this.drawer.element);
+            this.embedded = new module.element();
+            this.shadow.appendChild(this.embedded);
+          } else if (module.draw) {
+            this.drawer.element.style.display = 'block';
+            this.drawer.state = module.initState ? module.initState(this.drawer) : {};
+
+            this.drawer.paint = module.draw;
+            this.drawer.setPlayable(conf.playable !== false);
+
+            if (module.sliders) {
+              for (let s of module.sliders) {
+                this.sliders.push(new Slider(this.shadow, s.update));
+              }
+            }
+            this.drawer.on_resize();
+          } else {
+            console.error('Animation not found !');
+            this.drawer.element.style.display = 'block';
+            this.drawer.paint = null;
+          }
+
         });
       } else {
         if(type !== 'none') {
