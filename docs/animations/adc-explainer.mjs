@@ -1,5 +1,7 @@
 import 'https://cdn.jsdelivr.net/npm/chart.js';
 
+const IMG = 'https://gbourel.github.io/animation-drawer/animations/img';
+
 const urlArgs = new URLSearchParams(window.location.search);
 
 const T_MIN = urlArgs.has('T_MIN') ? parseInt(urlArgs.get('T_MIN')) : 0;
@@ -205,9 +207,9 @@ class ADCExplainer extends HTMLElement {
     this.shadowRoot.getElementById('tmid_lbl').textContent = `${parseInt(T_MAX+T_MIN)/2}°C`;
     this.shadowRoot.getElementById('tmin_lbl').textContent = `${T_MIN}°C`;
     if (VCC === 5) {
-      this.shadowRoot.querySelector('.voltage img').src = 'img/sensor.png';
+      this.shadowRoot.querySelector('.voltage img').src = `${IMG}/sensor.png`;
     } else if (VCC === 3.3) {
-      this.shadowRoot.querySelector('.voltage img').src = 'img/sensor3.png';
+      this.shadowRoot.querySelector('.voltage img').src = `${IMG}/sensor3.png`;
     }
 
     // Initialiser le graphique avec Chart.js

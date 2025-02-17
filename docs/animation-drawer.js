@@ -4,7 +4,6 @@
   let debug = false;
 
   const builtin = {
-    adc: { src: "./animations/adc-explainer.mjs", playable: false },
     car: { src: "./animations/car.mjs", playable: false },
     fan: { src: "./animations/fan.mjs" },
     gears0: { src: "./animations/gears0.mjs" },
@@ -73,6 +72,7 @@
       debug && console.debug("[AnimationDrawer] element moved to new page.");
     }
 
+    // Refresh
     attributeChangedCallback(name, oldValue, newValue) {
       debug && console.debug("[AnimationDrawer] element attributes changed.");
       this.refresh();

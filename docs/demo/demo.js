@@ -1,23 +1,44 @@
 (function(){
 
+
   window.onload = () => {
     let last = 'transports';
+    const container = document.querySelector('.drawer');
     const drawer = document.querySelector('animation-drawer');
     const html = document.getElementById('sample');
 
-    function updateDrawer(elt) {
-      drawer.setAttribute('type', elt.value);
+    const components = {
+      adc: {
+        script: 'animations/adc-explainer.mjs',
+        tag: '<adc-explainer></adc-explainer>'
+      },
+    };
+
+    function updateDemo(elt) {
+      const component = components[elt.value];
+      const src = component ? component.script : 'animation-drawer.js'
+      // const script = `http://127.0.0.1:8080/${src}`;
+      const script = `https://gbourel.github.io/animation-drawer/${src}`;
+      const mark = component ? component.tag : `<animation-drawer type="${elt.value}"></animation-drawer>`;
+      html.innerText = `<script src="${script}"></script>\n\n${mark}`;
+
+      container.removeChild(container.children[0]);
+      if (component) {
+        import(script).then((module) => {
+          const element = new module.element();
+          container.appendChild(element);
+        });
+      } else {
+        container.appendChild(drawer);
+        drawer.setAttribute('type', elt.value);
+      }
       if(window.localStorage) {
         localStorage.setItem('animation_demo_last', elt.value);
       }
     };
-    function updateHtml(elt) {
-      const script = `<script src="https://gbourel.github.io/animation-drawer/animation-drawer.js"></script>`;
-      html.innerText = `${script}\n\n<animation-drawer type="${elt.value}"></animation-drawer>`;
-    }
 
     const select = document.getElementById('anim-select');
-    for (let i in drawer.getAnimations()) {
+    for (let i in {...components, ...drawer.getAnimations()}) {
       let opt = document.createElement('option');
       opt.value = i;
       opt.textContent = i;
@@ -31,11 +52,10 @@
     select.value = last;
     drawer.setAttribute('type', last);
 
-    updateHtml(select);
+    updateDemo(select);
     select.addEventListener('change', (evt) => {
       const elt = evt.target;
-      updateDrawer(elt);
-      updateHtml(elt);
+      updateDemo(elt);
     });
 
     console.info('AnimationDrawer demo started.')
