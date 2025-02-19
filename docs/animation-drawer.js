@@ -190,9 +190,7 @@
     let play = document.createElement("div");
     play.classList.add("play_pause_button");
     play.classList.add("playing");
-    if (!options.playable) {
-      play.classList.add('hidden');
-    }
+    play.classList.add('hidden');
     wrapper.appendChild(play);
     paused = false;
 
