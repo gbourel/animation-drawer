@@ -2,6 +2,8 @@
   const SCALE = Math.min(2, window.devicePixelRatio || 1);
   const params = {};
   let debug = false;
+  let gdebug = false;
+  let doverlay = null;
 
   const builtin = {
     adc: { src: './animations/adc-explainer.mjs', playable: false },
@@ -30,6 +32,15 @@
     const param = item.split("=");
     if (param[0] === 'debug' && param[1] === 'true') {
       debug = true;
+    } if (param[0] === 'gdebug' && param[1] === 'true') {
+      debug = true;
+      gdebug = true;
+      console.debug = (args) => {
+        if (doverlay) {
+          doverlay.innerText += args;
+        }
+        console.log(args);
+      }
     } else if (param[0] && param[1]) {
       let val = decodeURIComponent(param[1]);
       params[param[0]] = val;
@@ -181,6 +192,20 @@
 
     if (options.setup) {
       options.setup(canvas);
+    }
+
+    if (gdebug) {
+      doverlay = document.createElement("div");
+      doverlay.style.position = 'absolute';
+      doverlay.style.width = "50%";
+      doverlay.style.height = "50%";
+      doverlay.style['z-index'] = "10";
+      doverlay.style.background = "#FFFFFF80";
+      doverlay.style.border = "1px solid #777";
+      doverlay.style.padding = '.2em';
+      doverlay.style['font-size'] = 'small';
+      doverlay.style['overflow-y'] = 'scroll';
+      wrapper.appendChild(doverlay);
     }
 
     wrapper.appendChild(canvas);
