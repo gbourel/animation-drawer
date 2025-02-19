@@ -37,7 +37,7 @@
       gdebug = true;
       console.debug = (args) => {
         if (doverlay) {
-          doverlay.innerText += args;
+          doverlay.innerText += args + '\n';
         }
         console.log(args);
       }
@@ -69,6 +69,20 @@
       this.shadow.appendChild(cssLink);
 
       this.shadow.appendChild(this.drawer.element);
+
+      if (gdebug) {
+        doverlay = document.createElement("div");
+        doverlay.style.position = 'absolute';
+        doverlay.style.width = "50%";
+        doverlay.style.height = "50%";
+        doverlay.style['z-index'] = "10";
+        doverlay.style.background = "#FFFFFF80";
+        doverlay.style.border = "1px solid #777";
+        doverlay.style.padding = '.2em';
+        doverlay.style['font-size'] = 'small';
+        doverlay.style['overflow-y'] = 'scroll';
+        this.shadow.appendChild(doverlay);
+      }
     }
 
     connectedCallback() {
@@ -180,6 +194,7 @@
     wrapper.style.position = "relative";
     wrapper.style.width = "100%";
     wrapper.style.height = "100%";
+    wrapper.style['min-height'] = "64px";
 
     wrapper.classList.add("canvas_container");
     wrapper.classList.add("non_selectable");
@@ -192,20 +207,6 @@
 
     if (options.setup) {
       options.setup(canvas);
-    }
-
-    if (gdebug) {
-      doverlay = document.createElement("div");
-      doverlay.style.position = 'absolute';
-      doverlay.style.width = "50%";
-      doverlay.style.height = "50%";
-      doverlay.style['z-index'] = "10";
-      doverlay.style.background = "#FFFFFF80";
-      doverlay.style.border = "1px solid #777";
-      doverlay.style.padding = '.2em';
-      doverlay.style['font-size'] = 'small';
-      doverlay.style['overflow-y'] = 'scroll';
-      wrapper.appendChild(doverlay);
     }
 
     wrapper.appendChild(canvas);
