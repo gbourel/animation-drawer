@@ -5,24 +5,25 @@
   let gdebug = false;
   let doverlay = null;
 
-  const builtin = {
-    adc: { src: './animations/adc-explainer.mjs', playable: false },
-    car: { src: "./animations/car.mjs", playable: false },
-    fan: { src: "./animations/fan.mjs" },
-    gears0: { src: "./animations/gears0.mjs" },
-    gears:  { src: "./animations/gears.mjs" },
-    hanoi:  { src: "./animations/hanoi.mjs" },
-    plane: { src: "./animations/plane.mjs", playable: false },
-    plane_moving: { src: "./animations/planeMoving.mjs" },
-    plane_linear:  { src: "./animations/planeLinear.mjs", playable: false },
-    time_plot: { src: "./animations/timePlot.mjs", playable: false },
-    transports: { src: "./animations/transports.mjs" },
-  };
   // FIXME how to use its own CSS file ?
   let baseUrl = "https://gbourel.github.io/animation-drawer";
   if (location.host.startsWith('nsix.test')) {
     baseUrl = "https://nsix.test:8080";  // FIXME port ?
   }
+
+  const builtin = {
+    adc: { src: `${baseUrl}/animations/adc-explainer.mjs`, playable: false },
+    car: { src: `${baseUrl}/animations/car.mjs`, playable: false },
+    fan: { src: `${baseUrl}/animations/fan.mjs` },
+    gears0: { src: `${baseUrl}/animations/gears0.mjs` },
+    gears:  { src: `${baseUrl}/animations/gears.mjs` },
+    hanoi:  { src: `${baseUrl}/animations/hanoi.mjs` },
+    plane: { src: `${baseUrl}/animations/plane.mjs`, playable: false },
+    plane_moving: { src: `${baseUrl}/animations/planeMoving.mjs` },
+    plane_linear:  { src: `${baseUrl}/animations/planeLinear.mjs`, playable: false },
+    time_plot: { src: `${baseUrl}/animations/timePlot.mjs`, playable: false },
+    transports: { src: `${baseUrl}/animations/transports.mjs` },
+  };
 
   // decode params
   location.search
