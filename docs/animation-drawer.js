@@ -4,6 +4,7 @@
   let debug = false;
 
   const builtin = {
+    adc: { src: './animations/adc-explainer.mjs', playable: false },
     car: { src: "./animations/car.mjs", playable: false },
     fan: { src: "./animations/fan.mjs" },
     gears0: { src: "./animations/gears0.mjs" },
@@ -61,7 +62,7 @@
 
     connectedCallback() {
       debug && console.debug("[AnimationDrawer] element added to page.");
-      this.refresh();
+      // this.refresh();
     }
 
     disconnectedCallback() {
@@ -84,12 +85,29 @@
       if (conf && conf.src) {
         debug && console.debug(`[AnimationDrawer] load ${conf.src}.`);
         import(conf.src).then((module) => {
+          // load attributes
+          const attr = {};
+          if (module.attributes) {
+            for (let arg of module.attributes) {
+              const v = this.getAttribute(arg.name);
+              if (v) {
+                if (arg.type === 'int') {
+                  attr[arg.name] = parseInt(v);
+                } else {
+                  attr[arg.name] = v;
+                }
+              }
+            }
+            debug && console.debug(`[AnimationDrawer] attributes ${JSON.stringify(attr)}.`);
+          }
+
           // remove previous sliders
           while (this.sliders.length) {
             this.shadow.removeChild(this.sliders.pop().container);
           }
           // remove previous embeded element
           if (this.embedded) {
+            debug && console.debug(`[AnimationDrawer] embedded.`);
             this.shadow.removeChild(this.embedded);
             this.embedded = null;
             this.shadow.appendChild(this.drawer.element);
@@ -98,7 +116,7 @@
           if (module.element) {
             this.drawer.paint = null;
             this.shadow.removeChild(this.drawer.element);
-            this.embedded = new module.element();
+            this.embedded = new module.element(attr);
             this.shadow.appendChild(this.embedded);
           } else if (module.draw) {
             this.drawer.element.style.display = 'block';

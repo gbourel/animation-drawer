@@ -2,19 +2,21 @@ import 'https://cdn.jsdelivr.net/npm/chart.js';
 
 const IMG = 'https://gbourel.github.io/animation-drawer/animations/img';
 
-const urlArgs = new URLSearchParams(window.location.search);
+// const urlArgs = new URLSearchParams(window.location.search);
 
-const T_MIN = urlArgs.has('T_MIN') ? parseInt(urlArgs.get('T_MIN')) : 0;
-const T_MAX = urlArgs.has('T_MAX') ? parseInt(urlArgs.get('T_MAX')) : 50;
 const T_STEP = 100; // température au centième de degré
-const VCC = urlArgs.has('VCC') ? parseFloat(urlArgs.get('VCC')) : 5;
-const BITS = urlArgs.has('BITS') ? parseInt(urlArgs.get('BITS')) : 3;
-const SAMPLING_RATE = urlArgs.has('SAMPLING_RATE') ? parseInt(urlArgs.get('SAMPLING_RATE')) : 1;
-const MAX_PTS = urlArgs.has('MAX_PTS') ? parseInt(urlArgs.get('MAX_PTS')) : 10;
 
 class ADCExplainer extends HTMLElement {
-  constructor() {
+  constructor(args) {
     super();
+    args = args || {};
+    this.tMin = 't-min' in args ? parseInt(args['t-min']) : 0;
+    this.tMax = 't-max' in args ? parseInt(args['t-max']) : 50;
+    this.vcc = 'vcc' in args ? parseFloat(args['vcc']) : 5;
+    this.bits = 'bits' in args ? parseInt(args['bits']) : 3;
+    this.samplingRate = 'sampling-rate' in args ? parseInt(args['sampling-rate']) : 1;
+    this.maxPts = 'max-pts' in args ? parseInt(args['max-pts']) : 10;
+
     const shadow = this.attachShadow({ mode: 'open' });
     shadow.innerHTML = `
     <div class="adc-container">
@@ -184,7 +186,7 @@ class ADCExplainer extends HTMLElement {
     `;
     shadow.appendChild(style);
 
-    this.maxDataPoints = MAX_PTS; // Nombre maximal de points affichés
+    this.maxDataPoints = this.maxPts; // Nombre maximal de points affichés
     this.voltageData = Array(this.maxDataPoints).fill(0); // Stocke les valeurs de tension
     this.digitalData = Array(this.maxDataPoints).fill(0); // Stocke les valeurs numériques
     this.timeLabels = Array(this.maxDataPoints); // Stocke les étiquettes de temps
@@ -200,15 +202,15 @@ class ADCExplainer extends HTMLElement {
     const calculation = this.shadowRoot.getElementById('calculation');
     const mercury = this.shadowRoot.getElementById('mercury');
 
-    slider.max = (T_MAX-T_MIN) * T_STEP;
-    tempValue.textContent = `${T_MIN}°C`;
-    digitalValue.textContent = '0'.padStart(BITS, '0');
-    this.shadowRoot.getElementById('tmax_lbl').textContent = `${T_MAX}°C`;
-    this.shadowRoot.getElementById('tmid_lbl').textContent = `${parseInt(T_MAX+T_MIN)/2}°C`;
-    this.shadowRoot.getElementById('tmin_lbl').textContent = `${T_MIN}°C`;
-    if (VCC === 5) {
+    slider.max = (this.tMax-this.tMin) * T_STEP;
+    tempValue.textContent = `${this.tMin}°C`;
+    digitalValue.textContent = '0'.padStart(this.bits, '0');
+    this.shadowRoot.getElementById('tmax_lbl').textContent = `${this.tMax}°C`;
+    this.shadowRoot.getElementById('tmid_lbl').textContent = `${parseInt(this.tMax+this.tMin)/2}°C`;
+    this.shadowRoot.getElementById('tmin_lbl').textContent = `${this.tMin}°C`;
+    if (this.vcc === 5) {
       this.shadowRoot.querySelector('.voltage img').src = `${IMG}/sensor.png`;
-    } else if (VCC === 3.3) {
+    } else if (this.vcc === 3.3) {
       this.shadowRoot.querySelector('.voltage img').src = `${IMG}/sensor3.png`;
     }
 
@@ -244,7 +246,7 @@ class ADCExplainer extends HTMLElement {
     options: {
       responsive: true,
       animation: {
-        duration: Math.min(800, parseInt(1000/SAMPLING_RATE)),
+        duration: Math.min(800, parseInt(1000/this.samplingRate)),
         y: {
           duration: 0
         }
@@ -261,7 +263,7 @@ class ADCExplainer extends HTMLElement {
             text: 'Tension (Volts)'
           },
           min: 0,
-          max: VCC
+          max: this.vcc
         },
         y1: {
           type: 'linear',
@@ -272,7 +274,7 @@ class ADCExplainer extends HTMLElement {
               drawOnChartArea: false, // only want the grid lines for one axis to show up
             },
             min: 0,
-            max: 2**BITS
+            max: 2**this.bits
           },
         }
       }
@@ -281,37 +283,37 @@ class ADCExplainer extends HTMLElement {
 
     slider.addEventListener('input', () => {
       const temperature = slider.value / T_STEP;
-      tempValue.textContent = `${+(temperature+T_MIN).toFixed(3)}°C`;
+      tempValue.textContent = `${+(temperature+this.tMin).toFixed(3)}°C`;
 
-      const voltage = (temperature / (T_MAX-T_MIN)) * VCC;
+      const voltage = (temperature / (this.tMax-this.tMin)) * this.vcc;
       analogVoltage.textContent = `${voltage.toFixed(2)}V`;
 
         // Mettre à jour la hauteur et couleur du mercure dans le thermomètre
-      const red = (temperature / (T_MAX-T_MIN)) * 255;
+      const red = (temperature / (this.tMax-this.tMin)) * 255;
       const blue = 255 - red;
       mercury.style.backgroundColor = `rgb(${red}, 0, ${blue})`;
-      const mercuryHeight = (temperature / (T_MAX-T_MIN)) * 100;
+      const mercuryHeight = (temperature / (this.tMax-this.tMin)) * 100;
       mercury.style.height = `${mercuryHeight}%`;
     });
 
     // Mettre à jour le graphique toutes les secondes (1 Hz)
     setInterval(() => {
       const temperature = slider.value / T_STEP;
-      const voltage = (temperature / (T_MAX-T_MIN)) * VCC;
-      const maxVal = (2**BITS) - 1;
-      const quantizedValue = Math.round((voltage / VCC) * maxVal);
-      const binaryOutput = quantizedValue.toString(2).padStart(BITS, '0');
+      const voltage = (temperature / (this.tMax-this.tMin)) * this.vcc;
+      const maxVal = (2**this.bits) - 1;
+      const quantizedValue = Math.round((voltage / this.vcc) * maxVal);
+      const binaryOutput = quantizedValue.toString(2).padStart(this.bits, '0');
 
       digitalValue.textContent = binaryOutput;
       decimalValue.textContent = quantizedValue;
-      finalValue.textContent = +(quantizedValue * ((T_MAX-T_MIN)/maxVal) + T_MIN).toFixed(3);
+      finalValue.textContent = +(quantizedValue * ((this.tMax-this.tMin)/maxVal) + this.tMin).toFixed(3);
       let calcStr = `${quantizedValue}`;
-      if (T_MIN == 0) {
-        calcStr += `×${T_MAX} / (2<sup>${BITS}</sup>-1)`;
-      } else if (T_MIN < 0) {
-        calcStr += `×(${T_MAX}${T_MIN}) / (2<sup>${BITS}</sup>-1) ${T_MIN}`;
-      } else if (T_MIN > 0) {
-        calcStr += `×${T_MAX} / (2<sup>3</sup>-1)`;
+      if (this.tMin == 0) {
+        calcStr += `×${this.tMax} / (2<sup>${this.bits}</sup>-1)`;
+      } else if (this.tMin < 0) {
+        calcStr += `×(${this.tMax}${this.tMin}) / (2<sup>${this.bits}</sup>-1) ${this.tMin}`;
+      } else if (this.tMin > 0) {
+        calcStr += `×${this.tMax} / (2<sup>3</sup>-1)`;
       }
       calculation.innerHTML = `${calcStr}`;
 
@@ -329,11 +331,15 @@ class ADCExplainer extends HTMLElement {
 
       chart.update();
 
-    }, parseInt(1000 / SAMPLING_RATE));
+    }, parseInt(1000 / this.samplingRate));
   }
 }
 
 customElements.define('adc-explainer', ADCExplainer);
 
-export const element = ADCExplainer;
 export const draw = null;
+export const element = ADCExplainer;
+export const attributes = [
+    { name: 't-min', type: 'int' },
+    { name: 't-max', type: 'int' }
+  ];

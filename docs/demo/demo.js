@@ -8,10 +8,6 @@
     const html = document.getElementById('sample');
 
     const components = {
-      adc: {
-        script: 'animations/adc-explainer.mjs',
-        tag: '<adc-explainer></adc-explainer>'
-      },
     };
 
     function updateDemo(elt) {
