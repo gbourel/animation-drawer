@@ -73,7 +73,7 @@
 
     connectedCallback() {
       debug && console.debug("[AnimationDrawer] element added to page.");
-      // this.refresh();
+      this.refresh();
     }
 
     disconnectedCallback() {
