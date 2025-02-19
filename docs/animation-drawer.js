@@ -110,6 +110,7 @@
       if (conf && conf.src) {
         debug && console.debug(`[AnimationDrawer] load ${conf.src}.`);
         import(conf.src).then((module) => {
+          debug && console.debug(`[AnimationDrawer] module loaded ${conf.src}.`);
           // load attributes
           const attr = {};
           if (module.attributes) {
