@@ -138,13 +138,13 @@ class ADCExplainer extends HTMLElement {
         margin: 48px 0;
       }
       .adc-container .graph-container .graph {
+        margin-top: 0;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
       }
       .adc-container .graph-container canvas {
-        margin-top: 20px;
         width: 100%;
         height: 400px;
       }
