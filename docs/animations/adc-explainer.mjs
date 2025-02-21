@@ -171,6 +171,7 @@ class ADCExplainer extends HTMLElement {
         .adc-container {
           flex-wrap: wrap;
           justify-content: center;
+          font-size: small;
 
           div, .temperature {
             border: none;
@@ -179,6 +180,9 @@ class ADCExplainer extends HTMLElement {
           .digital-output {
             border: none;
             width: 100%;
+          }
+          .adc-container > div {
+            padding: 4px;
           }
         }
       }
