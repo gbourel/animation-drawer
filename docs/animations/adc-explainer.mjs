@@ -131,7 +131,6 @@ class ADCExplainer extends HTMLElement {
         color: #555;
       }
       .adc-container .voltage {
-        width: 128px;
         background: #effcdc;
       }
       .adc-container .voltage img {
@@ -171,15 +170,45 @@ class ADCExplainer extends HTMLElement {
         .adc-container {
           flex-wrap: wrap;
           justify-content: center;
-          font-size: small;
+          font-size: 12px;
 
           div, .temperature {
             border: none;
             margin: .4rem .1rem;
           }
+          .temperature, .voltage {
+            width: 92px;
+            height: 200px;
+          }
+          .voltage img {
+            height: 100px;
+            margin: 24px 0;
+          }
           .digital-output {
             border: none;
             width: 100%;
+          }
+          .thermometer {
+            width: 20px;
+            height: 100px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+          }
+          .thermometer .mercury {
+            width: 100%;
+            background-color: red;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+          }
+          .slider-container input[type="range"] {
+            -webkit-appearance: slider-vertical;
+            width: 10px;
+            height: 100px;
+          }
+          .thermometer .labels {
+            display: none;
           }
           .adc-container > div {
             padding: 4px;
