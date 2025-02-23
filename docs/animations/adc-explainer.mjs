@@ -374,5 +374,9 @@ export const draw = null;
 export const element = ADCExplainer;
 export const attributes = [
     { name: 't-min', type: 'int' },
-    { name: 't-max', type: 'int' }
+    { name: 't-max', type: 'int' },
+    { name: 'vcc', type: 'float' },
+    { name: 'bits', type: 'int' },
+    { name: 'sampling-rate', type: 'int' },
+    { name: 'max-pts', type: 'int' }
   ];
