@@ -8,10 +8,8 @@ Live demo : https://gbourel.github.io/animation-drawer/
 
 ## Usage
 
-TODO
+The `docs/animation-drawer.js` file provides an `<animation-drawer>` element.
 
-## Install
-
-TODO
+See demo and `docs/index.html` for more info. 
 
 **Inspired by Bartosz Ciechanowski's awesome blog : https://ciechanow.ski/**
