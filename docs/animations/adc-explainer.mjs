@@ -307,7 +307,7 @@ class ADCExplainer extends HTMLElement {
               drawOnChartArea: false, // only want the grid lines for one axis to show up
             },
             min: 0,
-            max: 2**this.bits
+            max: 2**this.bits - 1
           },
         }
       }
