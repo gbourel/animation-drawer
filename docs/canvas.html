@@ -23,6 +23,10 @@
 
     <script>
       let type = sessionStorage.getItem('ad_type') || "plane_moving";
+      const arg = location.search.match('type=(\\w+)');
+      if (arg) {
+        type = arg[1];
+      }
       document.querySelector('animation-drawer').setAttribute('type', type);
     </script>
   </body>
